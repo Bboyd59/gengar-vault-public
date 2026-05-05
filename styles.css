@@ -244,6 +244,13 @@ h3 {
   line-height: 1.45;
 }
 
+.price-status {
+  margin: 14px 0 0;
+  color: var(--faint);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
 .controls,
 .section-head {
   display: flex;
@@ -431,6 +438,50 @@ h3 {
   width: 20px;
   height: 20px;
   accent-color: var(--green);
+}
+
+.price-box {
+  display: grid;
+  gap: 4px;
+  min-height: 112px;
+  margin: 14px 0 12px;
+  padding: 12px;
+  border: 1px solid rgba(184, 255, 104, 0.22);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(184, 255, 104, 0.08), rgba(155, 92, 255, 0.08));
+}
+
+.price-box.pending,
+.price-box.missing {
+  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.price-label {
+  color: var(--green);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.price-box strong {
+  font-family: "Space Grotesk", Satoshi, sans-serif;
+  font-size: 1.45rem;
+  letter-spacing: -0.04em;
+}
+
+.price-box small {
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.price-box a {
+  width: fit-content;
+  color: var(--violet-2);
+  font-size: 0.85rem;
+  text-decoration-color: rgba(213, 184, 255, 0.35);
+  text-underline-offset: 3px;
 }
 
 textarea {

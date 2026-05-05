@@ -42,7 +42,8 @@
           <p class="lede">
             Track the 52-card English Gengar checklist plus collector-extra Spirit Link entries.
             Images are sourced from Pokémon TCG image CDNs where available, with image-pending
-            placeholders for non-confirmed English physical prints.
+            placeholders for non-confirmed English physical prints. Market prices refresh from
+            Pokémon TCG API / TCGplayer data when the page opens.
           </p>
           <div class="hero-actions">
             <button class="primary" data-action="scroll-checklist">Start checking cards</button>
@@ -56,6 +57,7 @@
             <span id="progress-bar"></span>
           </div>
           <p id="progress-copy">Mark cards as owned to build your master set.</p>
+          <p class="price-status" id="price-status">Market prices loading after checklist opens.</p>
         </aside>
       </section>
     </header>
@@ -118,6 +120,11 @@
           <h3></h3>
           <p class="set-line"></p>
           <dl class="meta"></dl>
+          <div class="price-box" data-price-box>
+            <span class="price-label">Market price</span>
+            <strong>Loading…</strong>
+            <small>TCGplayer market, when available</small>
+          </div>
           <label class="owned-row">
             <input type="checkbox" />
             <span>Owned</span>
