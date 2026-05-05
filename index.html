@@ -47,6 +47,7 @@
           </p>
           <div class="hero-actions">
             <button class="primary" data-action="scroll-checklist">Start checking cards</button>
+            <button class="secondary" data-action="copy-sync-link">Copy sync link</button>
             <button class="secondary" data-action="reset-progress">Reset progress</button>
           </div>
         </div>
@@ -58,6 +59,18 @@
           </div>
           <p id="progress-copy">Mark cards as owned to build your master set.</p>
           <p class="price-status" id="price-status">Market prices loading after checklist opens.</p>
+          <div class="sync-panel">
+            <strong>Cross-device save</strong>
+            <p id="sync-status">Progress saves on this device. Copy a sync link to open the same vault on your phone or computer.</p>
+            <div class="sync-actions">
+              <button class="mini-button" data-action="copy-sync-link">Copy sync link</button>
+              <button class="mini-button" data-action="download-backup">Download backup</button>
+              <label class="mini-button file-button">
+                Import backup
+                <input id="backup-input" type="file" accept="application/json" />
+              </label>
+            </div>
+          </div>
         </aside>
       </section>
     </header>

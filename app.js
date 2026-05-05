@@ -1,10 +1,66 @@
+const STORAGE_KEYS = {
+  owned: "gengarVaultOwned",
+  notes: "gengarVaultNotes",
+};
+
+function loadJson(key, fallback) {
+  try {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeJson(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Some private browsers block storage. The sync link still works.
+  }
+}
+
+function decodeVaultPayload(value) {
+  if (!value) return null;
+  try {
+    const decoded = decodeURIComponent(escape(atob(value)));
+    const parsed = JSON.parse(decoded);
+    return {
+      owned: Array.isArray(parsed.owned) ? parsed.owned.map(String) : [],
+      notes: parsed.notes && typeof parsed.notes === "object" ? parsed.notes : {},
+      savedAt: parsed.savedAt || null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function encodeVaultPayload() {
+  const payload = {
+    version: 1,
+    savedAt: new Date().toISOString(),
+    owned: [...state.owned],
+    notes: state.notes,
+  };
+  return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+}
+
+function payloadFromUrl() {
+  const hash = window.location.hash || "";
+  const query = hash.startsWith("#vault=") ? hash.slice("#vault=".length) : new URLSearchParams(window.location.search).get("vault");
+  return decodeVaultPayload(query);
+}
+
+const urlPayload = payloadFromUrl();
+
 const state = {
   cards: [],
   filter: "all",
   search: "",
   prices: {},
-  owned: new Set(JSON.parse(localStorage.getItem("gengarVaultOwned") || "[]")),
-  notes: JSON.parse(localStorage.getItem("gengarVaultNotes") || "{}"),
+  owned: new Set(urlPayload?.owned || loadJson(STORAGE_KEYS.owned, [])),
+  notes: urlPayload?.notes || loadJson(STORAGE_KEYS.notes, {}),
+  syncMode: Boolean(urlPayload),
 };
 
 const els = {
@@ -15,14 +71,69 @@ const els = {
   progressBar: document.querySelector("#progress-bar"),
   progressCopy: document.querySelector("#progress-copy"),
   priceStatus: document.querySelector("#price-status"),
+  syncStatus: document.querySelector("#sync-status"),
+  backupInput: document.querySelector("#backup-input"),
   meter: document.querySelector(".meter"),
   search: document.querySelector("#search"),
   tabs: document.querySelectorAll(".tab"),
 };
 
 function save() {
-  localStorage.setItem("gengarVaultOwned", JSON.stringify([...state.owned]));
-  localStorage.setItem("gengarVaultNotes", JSON.stringify(state.notes));
+  writeJson(STORAGE_KEYS.owned, [...state.owned]);
+  writeJson(STORAGE_KEYS.notes, state.notes);
+  if (state.syncMode) updateUrlVault();
+  updateSyncStatus();
+}
+
+function currentVaultUrl() {
+  const url = new URL(window.location.href);
+  url.searchParams.delete("vault");
+  url.hash = `vault=${encodeVaultPayload()}`;
+  return url.toString();
+}
+
+function updateUrlVault() {
+  window.history.replaceState(null, "", currentVaultUrl());
+}
+
+function updateSyncStatus(message) {
+  if (!els.syncStatus) return;
+  if (message) {
+    els.syncStatus.textContent = message;
+    return;
+  }
+  els.syncStatus.textContent = state.syncMode
+    ? "Sync-link mode is on. This page URL updates as you check cards, so copy it anytime to continue on another device."
+    : "Progress saves on this device. Copy a sync link to open the same vault on your phone or computer.";
+}
+
+async function copySyncLink() {
+  state.syncMode = true;
+  save();
+  const link = currentVaultUrl();
+  try {
+    await navigator.clipboard.writeText(link);
+    updateSyncStatus("Sync link copied. Open that link on your phone or computer to load the same owned cards and notes.");
+  } catch {
+    window.prompt("Copy this sync link:", link);
+    updateSyncStatus("Copy the sync link from the prompt, then open it on your other device.");
+  }
+}
+
+function downloadBackup() {
+  const payload = {
+    version: 1,
+    savedAt: new Date().toISOString(),
+    owned: [...state.owned],
+    notes: state.notes,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "gengar-vault-backup.json";
+  link.click();
+  URL.revokeObjectURL(link.href);
+  updateSyncStatus("Backup downloaded. You can import it on another device if the sync link is not convenient.");
 }
 
 function normalize(value) {
@@ -271,7 +382,12 @@ async function init() {
   const response = await fetch("./seed-data.json");
   const data = await response.json();
   state.cards = [...data.main, ...data.extras];
+  if (urlPayload) {
+    writeJson(STORAGE_KEYS.owned, [...state.owned]);
+    writeJson(STORAGE_KEYS.notes, state.notes);
+  }
   render();
+  updateSyncStatus(urlPayload ? "Loaded progress from your sync link and saved it on this device." : undefined);
   loadMarketPrices();
 }
 
@@ -290,6 +406,30 @@ els.tabs.forEach((tab) => {
 
 document.querySelector('[data-action="scroll-checklist"]').addEventListener("click", () => {
   document.querySelector("#checklist").scrollIntoView({ behavior: "smooth" });
+});
+
+document.querySelectorAll('[data-action="copy-sync-link"]').forEach((button) => {
+  button.addEventListener("click", copySyncLink);
+});
+
+document.querySelector('[data-action="download-backup"]').addEventListener("click", downloadBackup);
+
+els.backupInput.addEventListener("change", async (event) => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  try {
+    const payload = JSON.parse(await file.text());
+    state.owned = new Set(Array.isArray(payload.owned) ? payload.owned.map(String) : []);
+    state.notes = payload.notes && typeof payload.notes === "object" ? payload.notes : {};
+    state.syncMode = true;
+    save();
+    render();
+    updateSyncStatus("Backup imported. This browser is now saved and the page URL is updated for syncing.");
+  } catch {
+    updateSyncStatus("That backup file could not be read. Try exporting a fresh backup from Gengar Vault.");
+  } finally {
+    event.target.value = "";
+  }
 });
 
 document.querySelector('[data-action="reset-progress"]').addEventListener("click", () => {
