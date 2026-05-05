@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gengar Vault | English Master Set Checklist</title>
+    <meta
+      name="description"
+      content="A public English Gengar Pokémon card master-set checklist with images, ownership tracking, search, and collector extras."
+    />
+    <meta property="og:title" content="Gengar Vault | English Master Set Checklist" />
+    <meta
+      property="og:description"
+      content="Track every English Gengar card with images, filters, and progress."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link href="https://api.fontshare.com/v2/css?f[]=space-grotesk@400,500,600,700&f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <header class="hero">
+      <nav class="topbar" aria-label="Site">
+        <a class="brand" href="#top" aria-label="Gengar Vault home">
+          <svg class="logo" viewBox="0 0 56 56" aria-hidden="true">
+            <path d="M10 8h36l4 7v28l-22 9-22-9V15l4-7Z" fill="none" stroke="currentColor" stroke-width="3" />
+            <path d="M17 31c3-9 9-14 11-14s8 5 11 14c-4-3-7-3-11-1-4-2-7-2-11 1Z" fill="currentColor" />
+            <path d="M22 24l5 2-5 2M34 24l-5 2 5 2" fill="none" stroke="#b8ff68" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span>Gengar Vault</span>
+        </a>
+        <a class="ghost-link" href="#checklist">Open checklist</a>
+      </nav>
+
+      <section class="hero-grid" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow">English master-set tracker</p>
+          <h1>Every Gengar card, one haunted binder checklist.</h1>
+          <p class="lede">
+            Track the 52-card English Gengar checklist plus collector-extra Spirit Link entries.
+            Images are sourced from Pokémon TCG image CDNs where available, with image-pending
+            placeholders for non-confirmed English physical prints.
+          </p>
+          <div class="hero-actions">
+            <button class="primary" data-action="scroll-checklist">Start checking cards</button>
+            <button class="secondary" data-action="reset-progress">Reset progress</button>
+          </div>
+        </div>
+        <aside class="progress-panel" aria-live="polite">
+          <span class="panel-label">Vault progress</span>
+          <strong id="progress-count">0 / 52</strong>
+          <div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="52" aria-valuenow="0">
+            <span id="progress-bar"></span>
+          </div>
+          <p id="progress-copy">Mark cards as owned to build your master set.</p>
+        </aside>
+      </section>
+    </header>
+
+    <main>
+      <section class="controls" id="checklist">
+        <div>
+          <p class="eyebrow">Binder controls</p>
+          <h2>Checklist</h2>
+        </div>
+        <div class="control-stack">
+          <label class="search-label">
+            <span>Search cards</span>
+            <input id="search" type="search" placeholder="Search name, set, number, artist..." autocomplete="off" />
+          </label>
+          <div class="tabs" role="tablist" aria-label="Filter checklist">
+            <button class="tab active" data-filter="all">All</button>
+            <button class="tab" data-filter="owned">Owned</button>
+            <button class="tab" data-filter="missing">Missing</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-head">
+        <div>
+          <p class="eyebrow">Main set</p>
+          <h2>English Gengar Pokémon cards</h2>
+        </div>
+        <span class="count-pill" id="main-count">52 cards</span>
+      </section>
+      <section class="card-grid" id="main-grid" aria-label="English Gengar Pokémon cards"></section>
+
+      <section class="section-head extras-head">
+        <div>
+          <p class="eyebrow">Collector extras</p>
+          <h2>Gengar Spirit Link</h2>
+        </div>
+        <span class="count-pill" id="extras-count">3 extras</span>
+      </section>
+      <section class="card-grid extras" id="extras-grid" aria-label="Gengar collector extras"></section>
+
+      <section class="caveat">
+        <h2>Master-set caveat</h2>
+        <p>
+          This is the clean card-name, English set/release, and card-number checklist. A true
+          binder master set can be expanded later with 1st Edition, unlimited, reverse holo,
+          stamped, cracked ice, cosmos holo, and other print variants.
+        </p>
+      </section>
+    </main>
+
+    <template id="card-template">
+      <article class="card-tile">
+        <div class="card-media"></div>
+        <div class="card-body">
+          <div class="card-topline">
+            <span class="card-index"></span>
+            <span class="source-pill"></span>
+          </div>
+          <h3></h3>
+          <p class="set-line"></p>
+          <dl class="meta"></dl>
+          <label class="owned-row">
+            <input type="checkbox" />
+            <span>Owned</span>
+          </label>
+          <textarea rows="2" placeholder="Notes: condition, grade, buy price, seller..."></textarea>
+        </div>
+      </article>
+    </template>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
