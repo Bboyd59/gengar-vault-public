@@ -2,7 +2,7 @@
   "main": [
     {
       "id": 1,
-      "name": "Gengar",
+      "name": "Gengar (Holo)",
       "setName": "Fossil",
       "cardNumber": "5/62",
       "imageUrl": "https://images.pokemontcg.io/base3/5_hires.png",
@@ -12,11 +12,11 @@
       "releaseDate": "1999/10/10",
       "artist": "Keiji Kinebuchi",
       "category": "main",
-      "subtype": ""
+      "subtype": "Fossil holo rare print"
     },
     {
       "id": 2,
-      "name": "Gengar",
+      "name": "Gengar (Non-Holo)",
       "setName": "Fossil",
       "cardNumber": "20/62",
       "imageUrl": "https://images.pokemontcg.io/base3/20_hires.png",
@@ -26,7 +26,7 @@
       "releaseDate": "1999/10/10",
       "artist": "Keiji Kinebuchi",
       "category": "main",
-      "subtype": ""
+      "subtype": "Fossil non-holo rare print"
     },
     {
       "id": 3,
@@ -39,20 +39,6 @@
       "rarity": "Rare Holo",
       "releaseDate": "2002/05/24",
       "artist": "Keiji Kinebuchi",
-      "category": "main",
-      "subtype": ""
-    },
-    {
-      "id": 4,
-      "name": "Gengar",
-      "setName": "Unnumbered Promotional cards",
-      "cardNumber": "Unnumbered",
-      "imageUrl": null,
-      "imageSource": null,
-      "apiId": null,
-      "rarity": null,
-      "releaseDate": null,
-      "artist": null,
       "category": "main",
       "subtype": ""
     },
@@ -281,20 +267,6 @@
       "subtype": ""
     },
     {
-      "id": 21,
-      "name": "Gengar",
-      "setName": "Pok\u00e9mon Card Game Illustrations Drawn by 7 Illustrators",
-      "cardNumber": "007/007",
-      "imageUrl": null,
-      "imageSource": null,
-      "apiId": null,
-      "rarity": null,
-      "releaseDate": null,
-      "artist": null,
-      "category": "main",
-      "subtype": ""
-    },
-    {
       "id": 22,
       "name": "Gengar",
       "setName": "Chilling Reign",
@@ -353,7 +325,7 @@
     {
       "id": 26,
       "name": "Gengar",
-      "setName": "Scarlet & Violet\u2014151",
+      "setName": "Scarlet & Violet—151",
       "cardNumber": "094/165",
       "imageUrl": "https://images.pokemontcg.io/sv3pt5/94_hires.png",
       "imageSource": "pokemontcg.io",
@@ -742,7 +714,7 @@
       "releaseDate": "2014/11/05",
       "artist": "5ban Graphics",
       "category": "extra",
-      "subtype": "Uncommon Trainer / Pok\u00e9mon Tool"
+      "subtype": "Uncommon Trainer / Pokémon Tool"
     },
     {
       "id": 102,

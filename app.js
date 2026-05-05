@@ -372,7 +372,8 @@ function render() {
   const main = state.cards.filter((card) => card.category === "main");
   const extras = state.cards.filter((card) => card.category === "extra");
 
-  main.filter(matches).forEach((card, index) => els.mainGrid.appendChild(renderCard(card, card.id || index + 1)));
+  const mainIndex = new Map(main.map((card, index) => [String(card.id), index + 1]));
+  main.filter(matches).forEach((card) => els.mainGrid.appendChild(renderCard(card, mainIndex.get(String(card.id)))));
   extras.filter(matches).forEach((card) => els.extrasGrid.appendChild(renderCard(card, "Extra")));
 
   updateProgress();
