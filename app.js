@@ -267,7 +267,11 @@ function applyPriceToBox(id, box) {
 async function loadMarketPrices() {
   const apiCards = state.cards.filter((card) => card.apiId);
   if (!apiCards.length) return;
-  const byApiId = new Map(apiCards.map((card) => [card.apiId, card]));
+  const byApiId = new Map();
+  apiCards.forEach((card) => {
+    if (!byApiId.has(card.apiId)) byApiId.set(card.apiId, []);
+    byApiId.get(card.apiId).push(card);
+  });
   const chunks = [];
   for (let i = 0; i < apiCards.length; i += 20) chunks.push(apiCards.slice(i, i + 20));
 
@@ -286,12 +290,13 @@ async function loadMarketPrices() {
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const payload = await response.json();
       for (const apiCard of payload.data || []) {
-        const localCard = byApiId.get(apiCard.id);
-        if (!localCard) continue;
-        const price = preferredPrice(localCard, apiCard.tcgplayer);
-        if (price?.market) priced += 1;
-        state.prices[localCard.id] = price || null;
-        applyPriceToTile(localCard.id);
+        const localCards = byApiId.get(apiCard.id) || [];
+        for (const localCard of localCards) {
+          const price = preferredPrice(localCard, apiCard.tcgplayer);
+          if (price?.market) priced += 1;
+          state.prices[localCard.id] = price || null;
+          applyPriceToTile(localCard.id);
+        }
       }
     } catch (error) {
       console.warn("Market price refresh failed", error);

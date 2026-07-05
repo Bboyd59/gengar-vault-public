@@ -99,6 +99,20 @@
       "subtype": ""
     },
     {
+      "id": "8R",
+      "name": "Gengar (Reverse Holo)",
+      "setName": "Skyridge",
+      "cardNumber": "10/144",
+      "imageUrl": "https://images.pokemontcg.io/ecard3/10_hires.png",
+      "imageSource": "pokemontcg.io",
+      "apiId": "ecard3-10",
+      "rarity": "Rare Reverse Holo",
+      "releaseDate": "2003/05/12",
+      "artist": "Kyoko Umemoto",
+      "category": "main",
+      "subtype": "Skyridge reverse holo variant"
+    },
+    {
       "id": 9,
       "name": "Gengar",
       "setName": "EX Legend Maker",
